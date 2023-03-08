@@ -7,6 +7,7 @@
             'field': 'device_created_timestamp',
             'data_type': 'timestamp'
         },
+        cluster_by='session_id',
         enabled=is_adapter('bigquery')
     )
 }}
