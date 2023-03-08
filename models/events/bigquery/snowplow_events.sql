@@ -3,6 +3,10 @@
         materialized='table',
         sort='device_created_timestamp',
         dist='inferred_user_id',
+        partition_by={
+            'field': 'device_created_timestamp',
+            'data_type': 'timestamp'
+        },
         enabled=is_adapter('bigquery')
     )
 }}
