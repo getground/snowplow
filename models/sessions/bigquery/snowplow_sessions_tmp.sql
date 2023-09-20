@@ -14,7 +14,7 @@
 with all_page_views as (
 
     select * from {{ ref('snowplow_page_views') }}
-    
+
     {% if is_incremental() %}
         where date(page_view_start) >= {{get_start_ts(this)}}
     {% endif %}
@@ -79,6 +79,8 @@ sessions as (
     first_page_view.user_snowplow_domain_id,
     first_page_view.user_snowplow_crossdomain_id,
 
+    first_page_view.useragent,
+
     first_page_view.session_id,
     first_page_view.session_index,
 
@@ -88,7 +90,7 @@ sessions as (
     timing.session_end,
     timing.session_start_local,
     timing.session_end_local,
-    
+
     array_length(all_pageviews) as count_page_views,
 
     struct(
@@ -116,7 +118,7 @@ sessions as (
     first_page_view.browser as browser,
     first_page_view.os as os,
     first_page_view.device as device,
-    
+
     {% if var('snowplow:pass_through_columns') | length > 0 %}
     first_page_view.custom as first_custom,
     exit_page_view.custom as last_custom,

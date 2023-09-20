@@ -32,13 +32,13 @@ with all_events as (
     from {{ ref('snowplow_base_events') }}
 
     {% if is_incremental() %}
-        
-        where date(collector_tstamp) >= 
+
+        where date(collector_tstamp) >=
             date_sub(
                 {{get_start_ts(this)}},
                 interval {{var('snowplow:page_view_lookback_days')}} day
             )
-    
+
     {% endif %}
 
 ),
@@ -90,6 +90,9 @@ page_views as (
     e.user_id as user_custom_id,
     e.domain_userid as user_snowplow_domain_id,
     e.network_userid as user_snowplow_crossdomain_id,
+
+    -- useragent
+    e.useragent as useragent,
 
     -- session
     e.domain_sessionid as session_id,
@@ -288,7 +291,7 @@ page_pings as (
     max(cast(collector_tstamp as timestamp)) as page_view_end,
 
     {%- set local_timezone -%} coalesce(os_timezone, '{{timezone}}')  {%- endset -%}
-  
+
     min(timestamp(datetime(cast(collector_tstamp as timestamp), {{ local_timezone }}))) as page_view_start_local,
     max(timestamp(datetime(cast(collector_tstamp as timestamp), {{ local_timezone }}))) as page_view_end_local,
 
