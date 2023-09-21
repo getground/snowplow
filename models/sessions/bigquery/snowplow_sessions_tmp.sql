@@ -79,7 +79,7 @@ sessions as (
     first_page_view.user_snowplow_domain_id,
     first_page_view.user_snowplow_crossdomain_id,
 
-    first_page_view.useragent,
+    first_page_view.user_agent,
 
     first_page_view.session_id,
     first_page_view.session_index,

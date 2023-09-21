@@ -92,7 +92,7 @@ page_views as (
     e.network_userid as user_snowplow_crossdomain_id,
 
     -- useragent
-    e.useragent as useragent,
+    e.useragent as user_agent,
 
     -- session
     e.domain_sessionid as session_id,
