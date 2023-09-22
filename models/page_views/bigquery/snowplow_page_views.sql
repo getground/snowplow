@@ -379,7 +379,7 @@ id_map as (
 
     select * from {{ ref('snowplow_id_map') }}
 
-),
+)
 
 select
 coalesce(id.user_id, s.user_snowplow_domain_id) as inferred_user_id,
