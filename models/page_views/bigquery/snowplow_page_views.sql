@@ -373,8 +373,18 @@ engagement as (
 
   from page_pings_xf
 
-)
+),
 
-select *
-from page_views
+id_map as (
+
+    select * from {{ ref('snowplow_id_map') }}
+
+),
+
+select
+coalesce(id.user_id, s.user_snowplow_domain_id) as inferred_user_id,
+pv.*,
+engagement.*
+from page_views pv
 join engagement using (page_view_id)
+left join id_map id on pv.user_snowplow_domain_id = id.domain_userid
